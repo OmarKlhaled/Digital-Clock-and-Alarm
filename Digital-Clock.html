@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alarm Clock</title>
+    <style>
+        body, html{
+            margin: 0;
+            padding: 0;
+            background-color: #121818;
+        }
+        *{
+            box-sizing: border-box;
+        }
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #clock {
+            font-family: sans-serif;
+            font-size: 15vw;
+            color: rgb(0, 255, 179);
+        }
+        .controls {
+            margin-top: 16px;
+        }
+        .button {
+            font-weight: bold;
+            border-radius: 5px;
+            border: none;
+            color: white;
+            padding: 4px 8px;
+            margin-left: 4px;
+            cursor: pointer;
+        }
+        .set-alarm {
+            background-color: #498AFB;
+        }
+
+        .clear-alarm {
+            background-color: #FF3860;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="clock"></div>
+        <input onchange="setAlarmTime(this.value)" name="alarmTime" type="datetime-local">
+        <div class="controls">
+            <button onclick="setAlarm()" class="button set-alarm">Set alarm</button>
+            <button onclick="clearAlarm()" class="button clear-alarm">Clear alarm</button>            
+        </div>
+    </div>
+
+
+    <script>
+        const display = document.getElementById('clock');
+        alertTime = null;
+        alertTimeout = null;
+
+        function updateTime(){
+            const date = new Date();
+            const hr = formatTime(date.getHours());
+            const min = formatTime(date.getMinutes());
+            const sec = formatTime(date.getSeconds());
+
+            display.innerText=`${hr} : ${min} : ${sec}`
+
+        }
+        setInterval(updateTime, 1000);
+
+        function formatTime(time){
+            if(time < 10){
+                return '0' + time;
+            }
+            return time;
+        }
+
+        function setAlarmTime(value){
+            alarmTime = value;
+        }
+        function setAlarm(){
+            if(alarmTime){
+                current = new Date();
+                timeToAlarm = new Date(alarmTime);
+                if(timeToAlarm > current){
+                    timeout = timeToAlarm.getTime() - current.getTime();
+                    alarmTimeout = setTimeout(() => alert('Wake Up!'), timeout);
+                    alert('Alarm set.');
+                }
+            }
+        }
+        function clearAlarm() {
+        if (alarmTimeout) {
+            clearTimeout(alarmTimeout);
+            alert('Alarm cleared');
+        }
+    }
+
+
+    </script>
+</body>
+</html>
